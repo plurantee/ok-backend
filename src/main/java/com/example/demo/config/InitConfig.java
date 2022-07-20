@@ -1,10 +1,11 @@
 package com.example.demo.config;
 
+import com.example.demo.model.Blog;
 import com.example.demo.model.MyAuthorities;
-import com.example.demo.model.Task;
 import com.example.demo.model.User;
 import com.example.demo.model.UserSettings;
 import com.example.demo.repository.AuthorityRepository;
+import com.example.demo.repository.BlogRepository;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.repository.UserSettingsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,9 @@ public class InitConfig {
     @Autowired
     private UserDetailsService userDetailsService;
 
+    @Autowired
+    private BlogRepository blogRepository;
+
     @Bean
     public void initializer() {
         MyAuthorities userAuth = userAuth();
@@ -41,6 +45,11 @@ public class InitConfig {
         User user = new User("florante", password);
         user.addAuthority(adminAuth);
         userRepository.save(user);
+        Blog blog = new Blog();
+        blog.setBlogTitle("Blog Topic 1");
+        blog.setBlogContent("This is the content.... ");
+        blog.setUser(user);
+        blogRepository.save(blog);
         userSettingsRepository.save(new UserSettings(user, "rapioflorante1@gmail.com"));
 
 

@@ -1,7 +1,8 @@
 package com.example.demo.controller;
 
 import com.example.demo.exception.AuthException;
-import com.example.demo.exception.AuthExceptionResponse;
+import com.example.demo.exception.BlogException;
+import com.example.demo.exception.CustomExceptionResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +19,14 @@ public class CustomException extends ResponseEntityExceptionHandler {
         log.error(exception.getMessage());
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
-                .body(new AuthExceptionResponse(exception.getMessage()));
+                .body(new CustomExceptionResponse(exception.getMessage()));
+    }
+
+    @ExceptionHandler(BlogException.class)
+    public ResponseEntity blogExceptionHandler(BlogException exception) {
+        log.error(exception.getMessage());
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(new CustomExceptionResponse(exception.getMessage()));
     }
 }

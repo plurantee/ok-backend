@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import com.example.demo.exception.AuthException;
 import com.example.demo.model.User;
 import com.example.demo.model.UserSettings;
 import com.example.demo.repository.UserRepository;
@@ -22,7 +23,11 @@ public class UserService implements UserDetailsService {
 
     @Override
     public User loadUserByUsername(String username) throws UsernameNotFoundException {
-        return userRepository.findById(username).get();
+        Optional<User> opUser = userRepository.findById(username);
+        if (opUser.isPresent()) {
+            return opUser.get();
+        }
+        throw new AuthException("Username not found");
     }
 
     public UserSettings getUserSettings(User user) throws Exception {

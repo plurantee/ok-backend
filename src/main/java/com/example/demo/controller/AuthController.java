@@ -6,10 +6,10 @@ import com.example.demo.model.AuthResponse;
 import com.example.demo.model.MyAuthorities;
 import com.example.demo.model.RegisterRequest;
 import com.example.demo.model.User;
-import com.example.demo.model.UserSettings;
+import com.example.demo.model.UserDetails;
 import com.example.demo.repository.AuthorityRepository;
 import com.example.demo.repository.UserRepository;
-import com.example.demo.repository.UserSettingsRepository;
+import com.example.demo.repository.UserDetailsRepository;
 import com.example.demo.service.UserService;
 import com.example.demo.util.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,7 +43,7 @@ public class AuthController {
     private UserRepository userRepository;
 
     @Autowired
-    private UserSettingsRepository userSettingsRepository;
+    private UserDetailsRepository userDetailsRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -65,16 +65,19 @@ public class AuthController {
     @PostMapping("register")
     public ResponseEntity authRegister(@RequestBody RegisterRequest registerRequest) throws Exception {
         Optional<User> opUser = userRepository.findByUsername(registerRequest.getUsername());
+        Optional<UserDetails> emailCheck = userDetailsRepository.findByEmail(registerRequest.getEmail());
         if (opUser.isPresent()) {
             throw new AuthException("User already exists");
-        } else {
-            User user = new User(registerRequest.getUsername(), passwordEncoder.encode(registerRequest.getPassword()));
-            UserSettings userSettings = new UserSettings(user, registerRequest.getEmail());
-            user.addAuthority(userAuth);
-            userRepository.save(user);
-            userSettingsRepository.save(userSettings);
-            return ResponseEntity.ok(user);
         }
+        if (emailCheck.isPresent()) {
+            throw new AuthException("User with the same email already exists");
+        }
+        User user = new User(registerRequest.getUsername(), passwordEncoder.encode(registerRequest.getPassword()));
+        UserDetails userDetails = new UserDetails(user, registerRequest.getEmail());
+        user.addAuthority(userAuth);
+        userRepository.save(user);
+        userDetailsRepository.save(userDetails);
+        return ResponseEntity.ok(user);
 
     }
 

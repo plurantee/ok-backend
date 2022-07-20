@@ -2,9 +2,9 @@ package com.example.demo.service;
 
 import com.example.demo.exception.AuthException;
 import com.example.demo.model.User;
-import com.example.demo.model.UserSettings;
+import com.example.demo.model.UserDetails;
 import com.example.demo.repository.UserRepository;
-import com.example.demo.repository.UserSettingsRepository;
+import com.example.demo.repository.UserDetailsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -19,7 +19,7 @@ public class UserService implements UserDetailsService {
     private UserRepository userRepository;
 
     @Autowired
-    private UserSettingsRepository userSettingsRepository;
+    private UserDetailsRepository userDetailsRepository;
 
     @Override
     public User loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -30,10 +30,10 @@ public class UserService implements UserDetailsService {
         throw new AuthException("Username not found");
     }
 
-    public UserSettings getUserSettings(User user) throws Exception {
-        Optional<UserSettings> userSettingsOptional = userSettingsRepository.findByUser(user);
-        if (userSettingsOptional.isPresent()) {
-            return userSettingsOptional.get();
+    public UserDetails getUserDetails(User user) throws Exception {
+        Optional<UserDetails> userDetailsOptional = userDetailsRepository.findByUser(user);
+        if (userDetailsOptional.isPresent()) {
+            return userDetailsOptional.get();
         }
         throw new Exception("User settings does not exist");
     }

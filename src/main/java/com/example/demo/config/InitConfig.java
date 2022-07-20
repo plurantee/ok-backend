@@ -3,11 +3,11 @@ package com.example.demo.config;
 import com.example.demo.model.Blog;
 import com.example.demo.model.MyAuthorities;
 import com.example.demo.model.User;
-import com.example.demo.model.UserSettings;
+import com.example.demo.model.UserDetails;
 import com.example.demo.repository.AuthorityRepository;
 import com.example.demo.repository.BlogRepository;
 import com.example.demo.repository.UserRepository;
-import com.example.demo.repository.UserSettingsRepository;
+import com.example.demo.repository.UserDetailsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,7 +24,7 @@ public class InitConfig {
     private UserRepository userRepository;
 
     @Autowired
-    private UserSettingsRepository userSettingsRepository;
+    private UserDetailsRepository userDetailsRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -50,7 +50,7 @@ public class InitConfig {
         blog.setBlogContent("This is the content.... ");
         blog.setUser(user);
         blogRepository.save(blog);
-        userSettingsRepository.save(new UserSettings(user, "rapioflorante1@gmail.com"));
+        userDetailsRepository.save(new UserDetails(user, "rapioflorante1@gmail.com"));
 
 
     }

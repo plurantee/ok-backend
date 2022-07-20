@@ -5,11 +5,10 @@ import com.example.demo.config.JwtRequestFilter;
 import com.example.demo.controller.BlogController;
 import com.example.demo.model.Blog;
 import com.example.demo.model.User;
-import com.example.demo.model.UserSettings;
 import com.example.demo.repository.AuthorityRepository;
 import com.example.demo.repository.BlogRepository;
 import com.example.demo.repository.UserRepository;
-import com.example.demo.repository.UserSettingsRepository;
+import com.example.demo.repository.UserDetailsRepository;
 import com.example.demo.service.UserService;
 import com.example.demo.util.JwtTokenUtil;
 import org.junit.Assert;
@@ -23,7 +22,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
-import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockServletContext;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.util.ReflectionTestUtils;
@@ -39,10 +37,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -76,7 +72,7 @@ public class BlogIT {
     @MockBean
     private BlogRepository blogRepository;
     @MockBean
-    private UserSettingsRepository userSettingsRepository;
+    private UserDetailsRepository userDetailsRepository;
     @MockBean
     private DataSource dataSource;
     @MockBean
